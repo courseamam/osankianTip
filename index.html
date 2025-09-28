@@ -67,11 +67,11 @@
     </div>
     <div class="box">
       <div class="box-title">Black Gasmian</div>
-      <div id="blackVal">-</div>
+      <div id="blackGasVal">-</div>
     </div>
     <div class="box">
       <div class="box-title">Official Gasmian</div>
-      <div id="officialVal">-</div>
+      <div id="officiaGaslVal">-</div>
     </div>
   </div>
 
@@ -94,9 +94,9 @@
         document.getElementById('dateDisplay').textContent = `Date: ${lastRow['Date'] || '-'}`;
 
         // Display tips
-        document.getElementById('lugianVal').textContent = lastRow['Lugian'] || '-';
-        document.getElementById('blackVal').textContent = lastRow['Black Gasmian'] || '-';
-        document.getElementById('officialVal').textContent = lastRow['Official Gasmian'] || '-';
+        document.getElementById('lugianVal').textContent = lastRow['Lugian Lira'] || '-';
+        document.getElementById('blackVal').textContent = lastRow['Gasmian Black Lira'] || '-';
+        document.getElementById('officialVal').textContent = lastRow['Gasmian Official Lira'] || '-';
       })
       .catch(err => {
         console.error('Error fetching data:', err);
