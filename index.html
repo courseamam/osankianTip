@@ -53,7 +53,16 @@
       font-weight: bold;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
     }
+
+  #tipChart {
+    max-width: 90%;
+    margin-top: 60px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 10px;
+  }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>Osankian Tip</h1>
@@ -74,33 +83,98 @@
       <div id="officialGasVal">-</div>
     </div>
   </div>
-
+  <canvas id="tipChart" width="800" height="400"></canvas>
   <script>
-    const sheetId = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'; 
-    const sheetName = 'Sheet1'; 
-    const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
+  const sheetId = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'; 
+  const sheetName = 'Sheet1'; 
+  const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        if (!data || data.length === 0) {
-          console.error('No data found');
-          return;
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (!data || data.length === 0) {
+        console.error('No data found');
+        return;
+      }
+
+      const lastRow = data[data.length - 1];
+
+      // Update boxes
+      document.getElementById('dateDisplay').textContent = `Date: ${lastRow['Date'] || '-'}`;
+      document.getElementById('lugianVal').textContent = lastRow['Lugian Lira'] || '-';
+      document.getElementById('blackGasVal').textContent = lastRow['Gasmian Black Lira'] || '-';
+      document.getElementById('officialGasVal').textContent = lastRow['Gasmian Official Lira'] || '-';
+
+      // Prepare chart data
+      const labels = data.map(row => row['Date']);
+      const lugianData = data.map(row => parseFloat(row['Lugian Lira']) || null);
+      const blackGasData = data.map(row => parseFloat(row['Gasmian Black Lira']) || null);
+      const officialGasData = data.map(row => parseFloat(row['Gasmian Official Lira']) || null);
+
+      // Create chart
+      const ctx = document.getElementById('tipChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Lugian Lira',
+              data: lugianData,
+              borderColor: 'rgba(255, 99, 132, 1)',
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Gasmian Black Lira',
+              data: blackGasData,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              fill: false,
+              tension: 0.1
+            },
+            {
+              label: 'Gasmian Official Lira',
+              data: officialGasData,
+              borderColor: 'rgba(255, 206, 86, 1)',
+              backgroundColor: 'rgba(255, 206, 86, 0.2)',
+              fill: false,
+              tension: 0.1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Date'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Value'
+              },
+              beginAtZero: false
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: 'pink'
+              }
+            }
+          }
         }
-
-        const lastRow = data[data.length - 1];
-
-        // Display date
-        document.getElementById('dateDisplay').textContent = `Date: ${lastRow['Date'] || '-'}`;
-
-        // Display tips
-        document.getElementById('lugianVal').textContent = lastRow['Lugian Lira'] || '-';
-        document.getElementById('blackGasVal').textContent = lastRow['Gasmian Black Lira'] || '-';
-        document.getElementById('officialGasVal').textContent = lastRow['Gasmian Official Lira'] || '-';
-      })
-      .catch(err => {
-        console.error('Error fetching data:', err);
       });
-  </script>
+    })
+    .catch(err => {
+      console.error('Error fetching data:', err);
+    });
+</script>
 </body>
 </html>
