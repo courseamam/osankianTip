@@ -26,22 +26,60 @@
         text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
       }
 
-      /* Google Sheet iframe */
-      iframe {
-        margin-top: 50px;
-        width: 90%;
-        height: 500px;
-        border: none;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      /* boxes */
+      .boxes {
+        display: flex;
+          gap: 30px;
+          margin-top: 50px;
       }
-    </style>
+
+      .box {
+        background: rgba(0,0,0,0.6);
+          padding: 30px;
+          width: 150px;
+          text-align: center;
+          font-size: 2em;
+          border-radius: 10px;
+          box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      }
+</style>
 </head>
 <body>
-  <h1>Osankian Tip</h1>
-  <h2>One tip a day</h2>
+    <h1>Osankian Tip</h1>
+    <h2>One tip a day</h2>
+    <div class="boxes">
+        <div class="box" id="box1">-</div>
+        <div class="box" id="box2">-</div>
+        <div class="box" id="box3">-</div>
+    </div>
 
-  <!-- Embed Google Sheet -->
-  <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRzHqZxwB2szdktWSn0p18Du8ztkO1ScDqjJaJ04mWVzUmxfWiv_ITCb3fcMLmgeOCw_r1ORLAHPt6O/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false">   
-  </iframe>
+    <script>
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRzHqZxwB2szdktWSn0p18Du8ztkO1ScDqjJaJ04mWVzUmxfWiv_ITCb3fcMLmgeOCw_r1ORLAHPt6O/pub?gid=0&single=true&output=csv"
+
+        fetch(csvUrl)
+        .then(response => response.text())
+        .then(data => {
+            // Split csv into rows
+            const rows = data.trim().split('\n');
+            const columns = rows[0].split(',').length;
+
+            // Initialize arrays for each column
+            let colData = Array(columns).fill().map(() => []);
+
+            // Fill colum arrays
+            rows.slice(1).forEach(row => {
+                row.split(',').forEach((val, idx) => {
+                    colData[idx].push(val);
+                });
+            });
+
+            // Get last value of each column and display in boxes
+            for (let i - 0; i < 3; i++) {
+                const lastValue = colData[i][colData[i].length - 1];
+                document.getElementById('box${i+1}').textContent = lastValue;
+            }
+        })
+        .catch(error => console.error("Error fetching CSV:', error));
+    </script>
 </body>
 </html>
