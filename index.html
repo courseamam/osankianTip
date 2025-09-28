@@ -73,29 +73,20 @@
   </div>
 
   <script>
-    const sheetID = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0';
-    const url = `https://spreadsheets.google.com/feeds/cells/1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0/1/public/full?alt=json`;
+    const url = 'https://opensheet.elk.sh/1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0/Sheet1';
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const entries = data.feed.entry;
-        const cols = {};
-
-        entries.forEach(cell => {
-          const col = cell.gs$cell.col;
-          if (!cols[col]) cols[col] = [];
-          cols[col].push(cell.gs$cell.$t);
-        });
-
-        for (let i = 1; i <= 3; i++) {
-          const title = cols[i] ? cols[i][0] : '-';
-          const lastVal = cols[i] ? cols[i][cols[i].length - 1] : '-';
-          document.getElementById(`title${i}`).textContent = title;
-          document.getElementById(`value${i}`).textContent = lastVal;
-        }
-      })
-      .catch(err => console.error(err));
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      for (let i = 0; i < 3; i++) {
+        const day = data[i];
+        if (!day) continue;
+        console.log(day)
+        // document.getElementById(`title${i + 1}`).textContent = day.L || '-';
+        // document.getElementById(`value${i + 1}`).textContent = tip.Tip || '-';
+      }
+    })
+    .catch(err => console.error('Error loading sheet:', err));
   </script>
 </body>
 </html>
