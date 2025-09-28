@@ -64,27 +64,36 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <h1>Osankian Tip</h1>
-  <div id="dateDisplay">Date: -</div>
-  <h2>One tip a day</h2>
 
-  <div class="boxes">
-    <div class="box">
-      <div class="box-title">Lugian Lira</div>
-      <div id="lugianVal">-</div>
+<body>
+  <div class="main-content">
+    <!-- Side Images -->
+    <img src="images/ofirHakatzin.jpg" alt="Left Side" class="side-image left">
+    <img src="images/ofirHakatzin.jpg" alt="Right Side" class="side-image right">
+
+    <!-- Main Content -->
+    <h1>Osankian Tip</h1>
+    <h2>One tip a day</h2>
+    <div id="dateDisplay">Date: -</div>
+
+    <div class="boxes">
+      <div class="box">
+        <div class="box-title">Lugian Lira</div>
+        <div id="lugianVal">-</div>
+      </div>
+      <div class="box">
+        <div class="box-title">Gasmian Black Lira</div>
+        <div id="blackGasVal">-</div>
+      </div>
+      <div class="box">
+        <div class="box-title">Gasmian Official Lira</div>
+        <div id="officialGasVal">-</div>
+      </div>
     </div>
-    <div class="box">
-      <div class="box-title">Gasmian Black Lira</div>
-      <div id="blackGasVal">-</div>
-    </div>
-    <div class="box">
-      <div class="box-title">Gasmian Official Lira</div>
-      <div id="officialGasVal">-</div>
-    </div>
-  </div>
-  <canvas id="tipChart" width="800" height="400"></canvas>
-  <script>
+</div>
+  
+<canvas id="tipChart" width="800" height="400"></canvas>
+<script>
   const sheetId = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'; 
   const sheetName = 'Sheet1'; 
   const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
@@ -178,6 +187,6 @@
     .catch(err => {
       console.error('Error fetching data:', err);
     });
-</script>
+  </script>
 </body>
 </html>
