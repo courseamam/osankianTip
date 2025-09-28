@@ -15,6 +15,7 @@
       justify-content: flex-start;
       font-family: Arial, sans-serif;
       color: pink;
+      background-color: #121212;
     }
 
     h1 {
@@ -24,8 +25,8 @@
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
     }
 
-    h2 {
-      margin-top: 0;
+    h2, #dateDisplay {
+      margin: 10px 0;
       font-size: 1.5em;
       text-align: center;
     }
@@ -39,9 +40,9 @@
     .box {
       background: rgba(0,0,0,0.6);
       padding: 30px;
-      width: 150px;
+      width: 180px;
       text-align: center;
-      font-size: 2em;
+      font-size: 1.5em;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
@@ -56,37 +57,50 @@
 </head>
 <body>
   <h1>Osankian Tip</h1>
+  <div id="dateDisplay">Date: -</div>
   <h2>One tip a day</h2>
+
   <div class="boxes">
-    <div class="box" id="box1">
-      <div class="box-title" id="title1">-</div>
-      <div id="value1">-</div>
+    <div class="box">
+      <div class="box-title">Lugian</div>
+      <div id="lugianVal">-</div>
     </div>
-    <div class="box" id="box2">
-      <div class="box-title" id="title2">-</div>
-      <div id="value2">-</div>
+    <div class="box">
+      <div class="box-title">Black Gasmian</div>
+      <div id="blackVal">-</div>
     </div>
-    <div class="box" id="box3">
-      <div class="box-title" id="title3">-</div>
-      <div id="value3">-</div>
+    <div class="box">
+      <div class="box-title">Official Gasmian</div>
+      <div id="officialVal">-</div>
     </div>
   </div>
 
   <script>
-    const url = 'https://opensheet.elk.sh/1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0/Sheet1';
+    const sheetId = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'; // Your actual sheet ID
+    const sheetName = 'Sheet1'; // Change this if your sheet tab has a different name
+    const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      for (let i = 0; i < 3; i++) {
-        const day = data[i];
-        if (!day) continue;
-        console.log(day)
-        // document.getElementById(`title${i + 1}`).textContent = day.L || '-';
-        // document.getElementById(`value${i + 1}`).textContent = tip.Tip || '-';
-      }
-    })
-    .catch(err => console.error('Error loading sheet:', err));
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if (!data || data.length === 0) {
+          console.error('No data found');
+          return;
+        }
+
+        const lastRow = data[data.length - 1];
+
+        // Display date
+        document.getElementById('dateDisplay').textContent = `Date: ${lastRow['Date'] || '-'}`;
+
+        // Display tips
+        document.getElementById('lugianVal').textContent = lastRow['Lugian'] || '-';
+        document.getElementById('blackVal').textContent = lastRow['Black Gasmian'] || '-';
+        document.getElementById('officialVal').textContent = lastRow['Official Gasmian'] || '-';
+      })
+      .catch(err => {
+        console.error('Error fetching data:', err);
+      });
   </script>
 </body>
 </html>
