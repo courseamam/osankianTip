@@ -42,44 +42,53 @@
           border-radius: 10px;
           box-shadow: 0 0 20px rgba(0,0,0,0.5);
       }
+
+      .box-title {
+          font-size: 1em;
+          margin-bottom: 1opx;
+          font-weight: bold;
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      }       
 </style>
 </head>
 <body>
     <h1>Osankian Tip</h1>
     <h2>One tip a day</h2>
     <div class="boxes">
-        <div class="box" id="box1">-</div>
-        <div class="box" id="box2">-</div>
-        <div class="box" id="box3">-</div>
+        <div class="box" id="box1"><div class="box-title" id="title1">-</div><div id="value1">-</div></div>
+        <div class="box" id="box2">-</div>div class="box-title" id="title2">-</div><div id="value2">-</div></div>
+        <div class="box" id="box3">-</div>div class="box-title" id="title3">-</div><div id="value3">-</div></div>
     </div>
 
     <script>
-        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRzHqZxwB2szdktWSn0p18Du8ztkO1ScDqjJaJ04mWVzUmxfWiv_ITCb3fcMLmgeOCw_r1ORLAHPt6O/pub?gid=0&single=true&output=csv"
+        const sheetID = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'
+        const url = 'https://spreadsheets.google.com/feeds/cells/${sheetID}/1/public/full?alt=json';
 
-        fetch(csvUrl)
-        .then(response => response.text())
+        fetch(url)
+        .then(res => res.json())
         .then(data => {
-            // Split csv into rows
-            const rows = data.trim().split('\n');
-            const columns = rows[0].split(',').length;
+            console.log('hi')
+            const entries = data.feed.entry;
+            const cols = {};
 
-            // Initialize arrays for each column
-            let colData = Array(columns).fill().map(() => []);
-
-            // Fill colum arrays
-            rows.slice(1).forEach(row => {
-                row.split(',').forEach((val, idx) => {
-                    colData[idx].push(val);
-                });
+            // Group cells by column
+            console.log('hiii')
+            entries.forEach(cell => {
+                const col = cell.gs$cell.col;
+                if (!cols[col]) cols[col] = [];
+                cols[col].push(cell.$t);
             });
 
-            // Get last value of each column and display in boxes
-            for (let i = 0; i < 3; i++) {
-                const lastValue = colData[i][colData[i].length - 1];
-                document.getElementById('box${i+1}').textContent = lastValue;
+            // Display column title (first row) and last value for first 3 columns
+            console.log('hiiiiii')
+            for(let i=1;1<=3;1++){
+                const title = cols[i] ? cols[i][0] : '-';
+                const lastVal = cols[i] ? cols[i][cols[i].length-1] : '-';
+                document.getElementByIdI('title${i}').textContent = title;
+                document.getElementByIdI('value{i}').textContent = lastVal;
             }
         })
-        .catch(error => console.error("Error fetching CSV:', error));
+        .catch(err => console.error(err));
     </script>
 </body>
 </html>
