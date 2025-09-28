@@ -17,9 +17,36 @@
       color: #ff4ba7;
       background-color: #f5c0d4;
     }
+    
+    .main-content {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 50px;
+      box-sizing: border-box;
+    }
 
+    .side-image {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 80px;
+      object-fit: cover;
+      z-index: -1; /* Behind the content */
+      pointer-events: none;
+    }
+
+    .side-image.left {
+      left: 0;
+    }
+
+    .side-image.right {
+      right: 0;
+    }
+
+    /* Align top of images to <h1> and bottom to end of .boxes */
     h1 {
-      margin-top: 50px;
+      position: relative;
       font-size: 4em;
       text-align: center;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
@@ -34,7 +61,8 @@
     .boxes {
       display: flex;
       gap: 30px;
-      margin-top: 50px;
+      position: relative;
+      margin-bottom: 20px;
     }
 
     .box {
