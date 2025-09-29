@@ -59,7 +59,6 @@
       font-size: 1.5em;
       text-align: center;
       transition: all 0.3s ease;
-      cursor: pointer;
     }
 
     /* Pink glow on hover */
@@ -73,29 +72,6 @@
         0 0 60px #ff69b4;
       }
 
-    /* Sparkle particle styles */
-    .sparkle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: pink;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: sparkle 0.8s linear forwards;
-      z-index: 999;
-    }
-    
-    @keyframes sparkle {
-      0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--dx), var(--dy)) scale(0.5);
-      }
-    } 
-    
     #dateDisplay {
       margin: 10px 0;
       font-size: 1.5em;
@@ -146,7 +122,7 @@
 
     <!-- Main Content -->
     <h1>The Osankian Tip</h1>
-    <h2 id="sparkle-header">One tip a day</h2>
+    <h2 id="glow-header">One tip a day</h2>
     <div id="dateDisplay">Date: -</div>
 
     <div class="boxes">
@@ -168,43 +144,12 @@
 <canvas id="tipChart" width="800" height="400"></canvas>
 <audio id="instrumental" src="music/Instrumental.mp3" type="audio/mpeg"></audio>
 <script>
-  // Sparkle and pink hover
-  const header = document.getElementById('sparkle-header');
-  const audio = document.getElementById('sparkle-audio');
-
-  header.addEventListener('click', () => {
-    audio.currentTime = 0;
+  document.getElementById('glow-header').addEventListener('click', () => {
+    const audio = document.getElementById('instrumental');
+    audio.currentTime = 0; // Reset to start
     audio.play();
   });
 
-  header.addEventListener('mouseenter', () => {
-    createSparkles(20); // create 20 sparkles on hover
-  });
-
-  function createSparkles(count) {
-    for (let i = 0; i < count; i++) {
-      const sparkle = document.createElement('div');
-      sparkle.className = 'sparkle';
-
-      // Random position near the header
-      const dx = (Math.random() - 0.5) * 200 + 'px';
-      const dy = (Math.random() - 0.5) * 100 + 'px';
-
-      sparkle.style.left = `${Math.random() * header.offsetWidth}px`;
-      sparkle.style.top = `${Math.random() * header.offsetHeight}px`;
-      sparkle.style.setProperty('--dx', dx);
-      sparkle.style.setProperty('--dy', dy);
-
-      document.querySelector('.sparkle-container').appendChild(sparkle);
-
-      // Remove sparkle after animation ends
-      sparkle.addEventListener('animationend', () => {
-        sparkle.remove();
-      });
-    }
-  }
-
-  // Read sheet and insert data
   const sheetId = '1-FnlsnezCjsXKwW5PdYCkWW2gYN7ccQYccY-LMSwh_0'; 
   const sheetName = 'Sheet1'; 
   const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
