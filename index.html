@@ -80,6 +80,11 @@
       gap: 20px; /* space between images and text */
       margin-top: 20px;
     }
+
+    .h2-titles {
+      flex-direction:column;
+      gap:0px;
+    }
     
     .h2-image {
       width: 100px;
@@ -185,8 +190,10 @@
     <!-- Side images around H2 -->
     <div class="h2-container">
       <img src="images/mountYankolit.png" alt="Left Side" class="h2-image" id="leftImg">
-      <h2 id="glow-header">One tip a day</h2>
-      <div id="dateDisplay">Date: -</div>
+      <div class="h2-titles">
+        <h2 id="glow-header">One tip a day</h2>
+        <div id="dateDisplay">Date: -</div>
+      </div>
       <img src="images/orange.png" alt="Right Side" class="h2-image" id="rightImg">
     </div>
     
